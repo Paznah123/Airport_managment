@@ -20,5 +20,6 @@ void    getAirportCode(char* code);
 void	freeAirport(Airport* pPort);
 void getAirportCountry(Airport* pPort);
 void* copyAirport(void* val);
+int compareAirportsByIATA(const void* p1, const void* p2);
 
 #endif

@@ -25,8 +25,8 @@ typedef struct node
 /*** Function prototypes ***/
 
 BOOL L_init(NODE* pList);					// create new list
-
-NODE* L_insertLast(NODE* pNode, DATA Value);	// add new node after *pNode
+//NODE* pNode,
+NODE* L_insertLast(NODE*  pNode, DATA Value);	// add new node after *pNode
 
 BOOL L_delete(NODE* pNode, void (*freeFunc)(void*));					// erase node after *pNode
 

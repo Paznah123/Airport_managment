@@ -4,7 +4,6 @@
 #include "Airport.h"
 #include "listGen.h"
 
-
 typedef struct
 {
 	NODE* headList;

@@ -8,6 +8,14 @@
 #include "General.h"
 
 
+int compareAirportsByIATA(const void* p1, const void* p2)
+{
+	const Airport* ap1 = (Airport*)p1;
+	const Airport* ap2 = (Airport*)p2;
+	return strcmp(ap1->code, ap2->code);
+}
+
+
 int	isSameAirport(const Airport* pPort1, const Airport* pPort2)
 {
 	if (!pPort1 || !pPort2)
@@ -31,11 +39,9 @@ int	isAirportCode(const Airport* pPort1, const char* code)
 void	initAirportNoCode(Airport* pPort)
 {
 	getAirportName(pPort);
-	getAirportCountry(pPort);
-	//getAirportContry2(pPort);
-
 	//getAirportCountry(pPort);
-	//pPort->country = getStrExactName("Enter airport country");
+
+	pPort->country = getStrExactName("Enter airport country");
 }
 
 void	printAirport(const Airport* pPort)

@@ -18,7 +18,6 @@ BOOL L_init(NODE* pList)
 	return True;
 }
 
-
 /////////////////////////////////////////////////////////////////
 // Insert
 // Aim:		add new node
@@ -96,20 +95,20 @@ NODE* L_find(NODE* pNode, DATA value, int(*compare)(const void*, const void*))
 //// Input:	pointer to the list structure
 //// Output:	TRUE if succeeded
 //////////////////////////////////////////////////
-//BOOL L_free(NODE* pList, void (*freeFunc)(void*))
-//{
-//	NODE *tmp;
-//
-//	if ( !pList ) return False;
-//	tmp = &(pList->head);
-//	BOOL res=True;
-//	while (res)
-//	{
-//		res = L_delete(tmp, freeFunc);
-//	}
-//	
-//	return True;
-//}
+BOOL L_free(NODE* pList, void (*freeFunc)(void*))
+{
+	NODE *tmp;
+
+	if ( !pList ) return False;
+	tmp = &(pList->next);
+	BOOL res=True;
+	while (res)
+	{
+		res = L_delete(tmp, freeFunc);
+	}
+	
+	return True;
+}
 
 
 ////////////////////////////////////////////////
@@ -118,68 +117,71 @@ NODE* L_find(NODE* pNode, DATA value, int(*compare)(const void*, const void*))
 // Input:	pointer to the list structure
 // Output:	a number of the printed elements
 ////////////////////////////////////////////////
-//int L_print(NODE* pList, void(*print)(const void*))
+int L_print(NODE* pList, void(*print)(const void*))
+{
+	NODE	*tmp = pList;
+	int		c = 0;
+
+	if ( !pList ) return 0;
+
+	printf("\n");
+	while (!tmp) {
+		print(tmp->key);
+		tmp = tmp->next;
+	}
+	printf("\n");
+	return c;
+}
+
+// For each member of  Linked List call function func with data as a single argument
+void forEach(NODE* list, int numOfElements, int elementSize, void (*func)(void* data)) {
+	for (int i = 0; i < numOfElements; i++)
+	{
+		func(list->key);
+		list = list->next;
+	}
+	while (list != NULL) {
+		func(list->key);
+		list = list->next;
+	}
+
+}
+
+//void* copyAirport(void* val)
 //{
-//	NODE	*tmp;
-//	int		c = 0;
-//
-//	if ( !pList ) return 0;
-//
-//	printf("\n");
-//	for ( tmp = pList->head.next;  tmp;  tmp = tmp->next, c++ )
-//		print(tmp->key);
-//	printf("\n");
-//	return c;
+//	Airport* src = (Airport*)val;
+//	Airport* dst = (Airport*)malloc(sizeof(Airport));
+//	if (!dst)
+//	{
+//		return NULL;
+//	}
+//	dst->name = _strdup(src->name);
+//	dst->country = _strdup(src->country);
+//	strcpy(dst->code, src->code);
+//	return dst;
 //}
-void* copyAirport(void* val)
-{
-	Airport* src = (Airport*)val;
-	Airport* dst = (Airport*)malloc(sizeof(Airport));
-	if (!dst)
-	{
-		return NULL;
-	}
-	dst->name = _strdup(src->name);
-	dst->country = _strdup(src->country);
-	strcpy(dst->code, src->code);
-	return dst;
-}
-
-void push( NODE** head, DATA data) {
-	NODE* new_node = (struct NODE*)malloc(sizeof( NODE));
-
-	new_node->key = data;
-	new_node->next = *head;
-
-	*head = new_node;
-}
-
-
-
-
-
-
-
-
-
-
-
-void insert(NODE* lastPtrNode, DATA x, void* (*copyValue)(DATA src))
-{
-	NODE* nQ = (NODE*)malloc(sizeof(NODE));
-	if (!nQ)  //case allocation failed
-	{
-		printf("Null");
-		return;
-	}
-	//NODE* q = Q;
-	//while (q->next != NULL)
-	//{
-	//	q = q->next;
-	//}
-	nQ->key = copyValue(x);
-	nQ->next = NULL;
-	lastPtrNode->next = nQ;
-}
+//
+//void push( NODE** head, DATA data) {
+//	NODE* new_node = (struct NODE*)malloc(sizeof( NODE));
+//
+//	new_node->key = data;
+//	new_node->next = *head;
+//
+//	*head = new_node;
+//}
+//
+//void insert(NODE* lastPtrNode, DATA x, void* (*copyValue)(DATA src))
+//{
+//	NODE* node = (NODE*)malloc(sizeof(NODE));
+//	if (!node)  //case allocation failed
+//	{
+//		printf("Null");
+//		return;
+//	}
+//
+//	node->key = copyValue(x);
+//	node->next = NULL;
+//	lastPtrNode->next = node;
+//}
 
 

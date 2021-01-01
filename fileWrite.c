@@ -74,7 +74,7 @@ void readCompanyFromFile()
 	fread(&nameLen, sizeof(int), 1, fp);
 	fread(&pComp->name, sizeof(char) * nameLen, 1, fp);
 	fread(&pComp->flightCount, sizeof(int), 1, fp);
-	*/
+	
 	for (int i = 0; i < 4; i++)
 	{
 		Flight flight;
@@ -85,6 +85,6 @@ void readCompanyFromFile()
 		printf("Flight: %s - %s - %d - %d//%d//%d", flight.originCode, 
 			flight.destCode, flight.hour, flight.date.day, flight.date.month, flight.date.year);
 	}
-
+	*/
 	fclose(fp);
 }

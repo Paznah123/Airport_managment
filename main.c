@@ -3,7 +3,7 @@
 #include "Company.h"
 #include "AirportManager.h"
 #include "General.h"
-
+#include "listGen.h"
 #include "Airport.h"
 #include "fileWrite.h"
 #include <string.h>
@@ -54,8 +54,10 @@ int main()
 			break;
 
 		case ePrintAirports:
+			//L_print(&manager.headList, printAirport);
 			printAirports(&manager);
-			readCompanyFromFile();
+			//freeManager(&manager);
+			//readCompanyFromFile();
 			break;
 
 		case ePrintFlightOrigDest:

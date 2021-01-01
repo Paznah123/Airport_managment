@@ -11,13 +11,16 @@ void	initCompany(Company* pComp)
 	pComp->name = getStrExactName("Enter company name");
 	pComp->flightArr = NULL;
 	pComp->flightCount = 0;
+	L_init(&pComp->listDate);
+	pComp->datesNumber = 0;
+	pComp->sortType = sortNull;
 }
 
 int	addFlight(Company* pComp,const AirportManager* pManager)
 {
 	if (pManager->count < 2)
 	{
-		printf("There are not enoght airport to set a flight\n");
+		printf("There are not enough airports to set a flight\n");
 		return 0;
 	}
 	pComp->flightArr = (Flight**)realloc(pComp->flightArr, (pComp->flightCount+1) * sizeof(Flight*));

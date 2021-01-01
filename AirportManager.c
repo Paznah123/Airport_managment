@@ -11,6 +11,7 @@ int	initManager(AirportManager* pManager)
 	L_init(&pManager->headList);
 	L_init(&pManager->listPtr);
 	pManager->listPtr = pManager->headList;
+
 	int count = 0;
 	do {
 		printf("How many airport?\t");
@@ -44,12 +45,10 @@ int	addAirport(AirportManager* pManager)
 		return 0;
 	setAirport(temp, pManager);
 
-	 pManager->listPtr=L_insertLast(pManager->listPtr, temp);
+	pManager->listPtr = L_insertLast(pManager->listPtr, temp);
 	pManager->count++;
 	return 1;
 }
-
-
 
 
 void  setAirport(Airport* pPort, AirportManager* pManager)
@@ -68,15 +67,14 @@ void  setAirport(Airport* pPort, AirportManager* pManager)
 
 Airport* findAirportByCode(const AirportManager* pManager, const char* code)
 {
-
-	NODE* pointerAirport= pManager->headList;
-	for (int i = 0; i < pManager->count-1; i++)
-	{
-		if (isAirportCode(&pointerAirport, code))
-			return pointerAirport;
-
+	NODE* pointerAirport = pManager->headList->next;
+	for (int i = 0; i < pManager->count; i++){
+		Airport* airport = pointerAirport->key;
+		if (isAirportCode(airport, code)) 
+			return airport;
 		pointerAirport = pointerAirport->next;
 	}
+
 	return NULL;
 }
 
@@ -104,5 +102,8 @@ void	printAirports(const AirportManager* pManager)
 
 void freeManager(AirportManager* pManager)
 {
-	free(pManager->headList);
+	for (int i = 1; i < pManager->count; i++)
+	{
+		L_free(&pManager->headList, freeAirport);
+	}
 }
