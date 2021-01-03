@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include "General.h"
+#include "Company.h"
 #include "Date.h"
+#include "listGen.h"
+#include "def.h"
 
 const int DAY_MONTHS[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 
+//==============================
 
 void getCorrectDate(Date* pDate)
 {
@@ -21,8 +26,9 @@ void getCorrectDate(Date* pDate)
 	} while (!ok);
 }
 
+//==============================
 
-int	 checkDate(char* date, Date* pDate)
+int		checkDate(char* date, Date* pDate)
 {
 	int day, month, year;
 	if (strlen(date) != 10)
@@ -43,7 +49,9 @@ int	 checkDate(char* date, Date* pDate)
 	return 1;
 }
 
-void printDate(const Date* pDate)
+//==============================
+
+void	printDate(const Date* pDate)
 {
-	printf("Date: %d/%d/%d", pDate->day, pDate->month, pDate->year);
+	printf("Date: %d/%d/%d ", pDate->day, pDate->month, pDate->year);
 }

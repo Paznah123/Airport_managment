@@ -1,31 +1,44 @@
 #ifndef __COMP__
 #define __COMP__
 
+#include "Date.h"
 #include "Flight.h"
 #include "AirportManager.h"
 
+//==============================
+
 typedef enum
 {
-	sortHour , sortDate , sortOriginCode, sortDestCode , sortNull
+	sortHour=1 , sortDate , sortOriginCode, sortDestCode , sortNull
 } eSortType;
 
 typedef struct
 {
 	char*		name;
-	NODE* listDate;
-	int datesNumber;
+	NODE*		headDate;
+	NODE*		listDate;
+	int			datesNumber;
 	int			flightCount;
 	Flight**	flightArr;
-	eSortType sortType;
-}Company;
+	eSortType	sortType;
+} Company;
 
+//==============================
+
+BOOL	checkDateExists(Date* date, Company* pComp);
+BOOL	isDateEqual(Date* date, Date* dateInList);
+int		addFlight(Company* pComp, const AirportManager* pManager);
 void	initCompany(Company* pComp);
-int		addFlight(Company* pComp,const AirportManager* pManager);
 void	printCompany(const Company* pComp);
 void	printFlightsCount(const Company* pComp);
 void	printFlightArr(Flight** pFlight, int size);
 void	freeFlightArr(Flight** arr, int size);
 void	freeCompany(Company* pComp);
-BOOL    checkDateExists(Date* date, NODE* listDate);
+void	sortFlightList(Company* pComp);
+int		compareByHour(const DATA a, const DATA b);
+int		compareByDate(const DATA a, const DATA b);
+int		compareByOriginCode(const DATA a, const DATA b);
+int		compareByDestCode(const DATA a, const DATA b);
+
 #endif
 

@@ -1,12 +1,23 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "General.h"
 
+void trim(char* s) {
+	char* p = s;
+	int l = strlen(p);
 
+	while (isspace(p[l - 1])) p[--l] = 0;
+	while (*p && isspace(*p)) ++p, --l;
 
-char* getStrExactName(const char* msg)
+	memmove(s, p, l + 1);
+}
+
+//==============================
+
+char*	getStrExactName(const char* msg)
 {
 	char* str;
 	char temp[MAX_STR_LEN];
@@ -17,7 +28,9 @@ char* getStrExactName(const char* msg)
 	return str;
 }
 
-char* getDynStr(char* str)
+//==============================
+
+char*	getDynStr(char* str)
 {
 	char* theStr;
 	theStr = (char*)malloc((strlen(str) + 1) * sizeof(char));
@@ -28,9 +41,9 @@ char* getDynStr(char* str)
 	return theStr;
 }
 
+//==============================
 
-
-char*  myGets(char* buffer, int size)
+char*	myGets(char* buffer, int size)
 {
 	if (buffer != NULL && size > 0)
 	{
@@ -43,6 +56,8 @@ char*  myGets(char* buffer, int size)
 	}
 	return NULL;
 }
+
+//==============================
 
 char**	splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 {

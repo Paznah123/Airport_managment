@@ -3,6 +3,7 @@
 #include <string.h>
 #include "Flight.h"
 
+//==============================
 
 void	initFlight(Flight* pFlight, const AirportManager* pManager)
 {
@@ -21,36 +22,7 @@ void	initFlight(Flight* pFlight, const AirportManager* pManager)
 	pFlight->hour = getFlightHour();
 }
 
-int	isFlightInRoute(const Flight* pFlight,const char* codeSource, const char* codeDest)
-{
-	if ((strcmp(pFlight->originCode, codeSource) == 0) &&
-		(strcmp(pFlight->destCode, codeDest) == 0))
-		return 1;
-
-	return 0;
-}
-
-int	countFlightsInRoute(Flight** arr, int size,const char* codeSource, 
-		const char* codeDest)
-{
-	int count = 0;
-	for (int i = 0; i < size; i++)
-	{
-		if (isFlightInRoute(arr[i], codeSource, codeDest))
-			count++;
-	}
-	return count;
-}
-
-void	printFlight(const Flight* pFlight)
-{
-	printf("Flight From %s To %s\t",pFlight->originCode, pFlight->destCode);
-	printDate(&pFlight->date);
-	printf("Hour: %d\n",pFlight->hour);
-}
-
-
-int getFlightHour()
+int		getFlightHour()
 {
 	int h;
 	do {
@@ -60,21 +32,54 @@ int getFlightHour()
 	return h;
 }
 
-Airport* setAiportToFlight(const AirportManager* pManager, const char* msg)
+//==============================
+
+Airport*	setAiportToFlight(const AirportManager* pManager, const char* msg)
 {
 	char code[MAX_STR_LEN];
 	Airport* port;
-	do
-	{
+	do {
 		printf("%s\t", msg);
 		myGets(code, MAX_STR_LEN);
 		port = findAirportByCode(pManager, code);
 		if (port == NULL)
 			printf("No airport in this country - try again\n");
-	} while(port == NULL);
+	} while (port == NULL);
 
 	return port;
+}
 
+//==============================
+
+int		isFlightInRoute(const Flight* pFlight,const char* codeSource, const char* codeDest)
+{
+	if ((strcmp(pFlight->originCode, codeSource) == 0) &&
+		(strcmp(pFlight->destCode, codeDest) == 0))
+		return 1;
+
+	return 0;
+}
+
+int		countFlightsInRoute(Flight** arr, int size,const char* codeSource, 
+		const char* codeDest)
+{
+	int count = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if (isFlightInRoute(arr, codeSource, codeDest))
+			count++;
+		arr++;
+	}
+	return count;
+}
+
+//==============================
+
+void	printFlight(const Flight* pFlight)
+{
+	printf("Flight From %s To %s\t", pFlight->originCode, pFlight->destCode);
+	printDate(&pFlight->date);
+	printf("Hour: %d\n", pFlight->hour);
 }
 
 void	freeFlight(Flight* pFlight)

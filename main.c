@@ -8,6 +8,7 @@
 #include "fileWrite.h"
 #include <string.h>
 
+//==============================
 
 typedef enum 
 { 
@@ -20,67 +21,71 @@ const char* str[eNofOptions] = { "Add Flight", "Add Airport",
 								"Print flights between origin-destination"};
 
 #define EXIT			-1
-//int menu();
+int menu();
+
+//==============================
 
 int main()
 {
 	AirportManager	manager;
 	Company			company;
-
-	initManager(&manager);
-	initCompany(&company);
-
+	/*if () {
+		readManagerFromTextFile(&manager);
+		readCompanyFromFile(&company);
+	} else {*/
+		initManager(&manager);
+		initCompany(&company);
 	int option;
 	int stop = 0;
 	
-	do
-	{
+	do {
 		option = menu();
-		switch (option)
-		{
-		case eAddFlight:
-			if (!addFlight(&company, &manager))
-				printf("Error adding flight\n");
-			break;
+		switch (option) {
+			case eAddFlight:
+				if (!addFlight(&company, &manager))
+					printf("Error adding flight\n");
+				break;
 
+			case eAddAirport:
+				if (!addAirport(&manager))
+					printf("Error adding airport\n");
+				break;
 
-		case eAddAirport:
-			if (!addAirport(&manager))
-				printf("Error adding airport\n");
-			break;
+			case ePrintCompany:
+				printCompany(&company);
+				//L_print(company.headDate->next, printDate);
+				break;
 
-		case ePrintCompany:
-			printCompany(&company);
-			break;
+			case ePrintAirports:
+				//L_print(manager.headList->next, printAirport);
+				printAirports(&manager);
+				break;
 
-		case ePrintAirports:
-			//L_print(&manager.headList, printAirport);
-			printAirports(&manager);
-			//freeManager(&manager);
-			//readCompanyFromFile();
-			break;
+			case ePrintFlightOrigDest:
+				sortFlightList(&company);
+				//printFlightsCount(&company);
+				break;
 
-		case ePrintFlightOrigDest:
-			printFlightsCount(&company);
-			break;
-
-		case EXIT:
-			writeAirportsToFile(&manager);
-			writeCompanyToFile(&company);
-			printf("Bye bye\n");
-			stop = 1;
-			break;
+			case EXIT:
+				writeAirportsToFile(&manager);
+				writeCompanyToFile(&company);
+				printf("Bye bye\n");
+				stop = 1;
+				break;
 		
-		default:
-			printf("Wrong option\n");
-			break;
+			default:
+				printf("Wrong option\n");
+				break;
 		}
 	} while (!stop);
 
-	freeManager(&manager);
-	freeCompany(&company);
+	// needs fix
+	//freeManager(&manager);
+	//freeCompany(&company);
 	return 1;
 }
+
+//==============================
 
 int menu()
 {
@@ -96,14 +101,3 @@ int menu()
 	scanf("%c", &tav);
 	return option;
 }
-//int main()
-//{
-//	Airport* air= malloc(sizeof(Airport));
-//	strcpy(air->code,"AAA");
-//	air->country = (char*)malloc(sizeof(char) * 6);
-//	air->name = (char*)calloc(3, sizeof(char));
-//	strcpy(air->country, "Israel");
-//	strcpy(air->name, "Paz");
-//	printAirport(air);
-//	return 0;
-//}

@@ -2,15 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "FileWrite.h"
 #include "AirportManager.h"
 
-int	initManager(AirportManager* pManager)
+//==============================
+
+int		initManager(AirportManager* pManager)
 {
 	printf("-----------  Init airport Manager\n");
 	pManager->count = 0;
 	L_init(&pManager->headList);
 	L_init(&pManager->listPtr);
 	pManager->listPtr = pManager->headList;
+	readManagerFromTextFile(pManager);
 
 	int count = 0;
 	do {
@@ -34,9 +38,9 @@ int	initManager(AirportManager* pManager)
 	return 1;
 }
 
+//==============================
 
-
-int	addAirport(AirportManager* pManager)
+int		addAirport(AirportManager* pManager)
 {
 	Airport* temp = (Airport*)malloc(sizeof(Airport));
 	if (!temp)
@@ -51,7 +55,7 @@ int	addAirport(AirportManager* pManager)
 }
 
 
-void  setAirport(Airport* pPort, AirportManager* pManager)
+void	setAirport(Airport* pPort, AirportManager* pManager)
 {
 	while (1)
 	{
@@ -65,7 +69,9 @@ void  setAirport(Airport* pPort, AirportManager* pManager)
 	initAirportNoCode(pPort);
 }
 
-Airport* findAirportByCode(const AirportManager* pManager, const char* code)
+//==============================
+
+Airport*	findAirportByCode(const AirportManager* pManager, const char* code)
 {
 	NODE* pointerAirport = pManager->headList->next;
 	for (int i = 0; i < pManager->count; i++){
@@ -78,7 +84,7 @@ Airport* findAirportByCode(const AirportManager* pManager, const char* code)
 	return NULL;
 }
 
-int checkUniqeCode(const char* code,const AirportManager* pManager)
+int		checkUniqeCode(const char* code,const AirportManager* pManager)
 {
 	Airport* port = findAirportByCode(pManager,code);
 
@@ -86,6 +92,16 @@ int checkUniqeCode(const char* code,const AirportManager* pManager)
 		return 0;
 
 	return 1;
+}
+
+//==============================
+
+void	freeManager(AirportManager* pManager)
+{
+	for (int i = 1; i < pManager->count; i++)
+	{
+		L_free(&pManager->headList, freeAirport);
+	}
 }
 
 void	printAirports(const AirportManager* pManager)
@@ -97,13 +113,5 @@ void	printAirports(const AirportManager* pManager)
 		printAirport(pointerAirport->next->key);
 		printf("\n");
 		pointerAirport = pointerAirport->next;
-	}
-}
-
-void freeManager(AirportManager* pManager)
-{
-	for (int i = 1; i < pManager->count; i++)
-	{
-		L_free(&pManager->headList, freeAirport);
 	}
 }

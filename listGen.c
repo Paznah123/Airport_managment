@@ -3,14 +3,13 @@
 #include "listGen.h"
 #include "Airport.h"
 
-
 //////////////////////////////////////////
 // Init
 // Aim:		create new list
 // Input:	pointer to the list structure
 // Output:	TRUE if succeeded
 //////////////////////////////////////////
-BOOL L_init(NODE* pList)
+BOOL	L_init(NODE* pList)
 {
 	pList->key = (Airport*)malloc(sizeof(Airport));
 	if ( pList == NULL ) return False;	// no list to initialize
@@ -25,7 +24,7 @@ BOOL L_init(NODE* pList)
 //			a value to be stored in the new node
 // Output:	pointer to the new node
 /////////////////////////////////////////////////////////////////
-NODE* L_insertLast(NODE* pNode, DATA Value)
+NODE*	L_insertLast(NODE* pNode, DATA Value)
 {
 	NODE* tmp;
 
@@ -41,14 +40,13 @@ NODE* L_insertLast(NODE* pNode, DATA Value)
 	return tmp;
 }
 
-
 //////////////////////////////////////////////////////////////
 // Delete
 // Aim:		erase node
 // Input:	pointer to the node BEFORE the node to be deleted 
 // Output:	TRUE if succeeded
 //////////////////////////////////////////////////////////////
-BOOL L_delete(NODE* pNode,void (*freeFunc)(void*))
+BOOL	L_delete(NODE* pNode,void (*freeFunc)(void*))
 {
 	NODE* tmp;
 
@@ -61,7 +59,6 @@ BOOL L_delete(NODE* pNode,void (*freeFunc)(void*))
 	return True;
 }
 
-
 /////////////////////////////////////////////////////////
 // Find
 // Aim:		search for a value
@@ -69,7 +66,7 @@ BOOL L_delete(NODE* pNode,void (*freeFunc)(void*))
 //			a value to be found
 // Output:	pointer to the node containing the Value
 /////////////////////////////////////////////////////////
-NODE* L_find(NODE* pNode, DATA value, int(*compare)(const void*, const void*))
+NODE*	L_find(NODE* pNode, DATA value, int(*compare)(const void*, const void*))
 {
 	NODE* temp = NULL;
 	if ( !pNode ) return NULL;
@@ -88,14 +85,13 @@ NODE* L_find(NODE* pNode, DATA value, int(*compare)(const void*, const void*))
 
 }
 
-
 //////////////////////////////////////////////////
 //// Free (additional function)
 //// Aim:		free the list memory
 //// Input:	pointer to the list structure
 //// Output:	TRUE if succeeded
 //////////////////////////////////////////////////
-BOOL L_free(NODE* pList, void (*freeFunc)(void*))
+BOOL	L_free(NODE* pList, void (*freeFunc)(void*))
 {
 	NODE *tmp;
 
@@ -110,14 +106,13 @@ BOOL L_free(NODE* pList, void (*freeFunc)(void*))
 	return True;
 }
 
-
 ////////////////////////////////////////////////
 // Print (additional function)
 // Aim:		print the list content (assume the DATA is int)
 // Input:	pointer to the list structure
 // Output:	a number of the printed elements
 ////////////////////////////////////////////////
-int L_print(NODE* pList, void(*print)(const void*))
+int		L_print(NODE* pList, void(*print)(const void*))
 {
 	NODE	*tmp = pList;
 	int		c = 0;
@@ -125,7 +120,7 @@ int L_print(NODE* pList, void(*print)(const void*))
 	if ( !pList ) return 0;
 
 	printf("\n");
-	while (!tmp) {
+	while (tmp != NULL) {
 		print(tmp->key);
 		tmp = tmp->next;
 	}
@@ -134,7 +129,7 @@ int L_print(NODE* pList, void(*print)(const void*))
 }
 
 // For each member of  Linked List call function func with data as a single argument
-void forEach(NODE* list, int numOfElements, int elementSize, void (*func)(void* data)) {
+void	L_forEach(NODE* list, int numOfElements, int elementSize, void (*func)(void* data)) {
 	for (int i = 0; i < numOfElements; i++)
 	{
 		func(list->key);
@@ -147,41 +142,5 @@ void forEach(NODE* list, int numOfElements, int elementSize, void (*func)(void* 
 
 }
 
-//void* copyAirport(void* val)
-//{
-//	Airport* src = (Airport*)val;
-//	Airport* dst = (Airport*)malloc(sizeof(Airport));
-//	if (!dst)
-//	{
-//		return NULL;
-//	}
-//	dst->name = _strdup(src->name);
-//	dst->country = _strdup(src->country);
-//	strcpy(dst->code, src->code);
-//	return dst;
-//}
-//
-//void push( NODE** head, DATA data) {
-//	NODE* new_node = (struct NODE*)malloc(sizeof( NODE));
-//
-//	new_node->key = data;
-//	new_node->next = *head;
-//
-//	*head = new_node;
-//}
-//
-//void insert(NODE* lastPtrNode, DATA x, void* (*copyValue)(DATA src))
-//{
-//	NODE* node = (NODE*)malloc(sizeof(NODE));
-//	if (!node)  //case allocation failed
-//	{
-//		printf("Null");
-//		return;
-//	}
-//
-//	node->key = copyValue(x);
-//	node->next = NULL;
-//	lastPtrNode->next = node;
-//}
 
 
