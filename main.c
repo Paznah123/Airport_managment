@@ -1,27 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "Company.h"
 #include "AirportManager.h"
-#include "General.h"
-#include "listGen.h"
 #include "Airport.h"
 #include "fileWrite.h"
-#include <string.h>
+#include "General.h"
+#include "listGen.h"
+
+int menu();
 
 //==============================
 
-typedef enum 
-{ 
-	eAddFlight, eAddAirport, ePrintCompany, ePrintAirports,
-	ePrintFlightOrigDest, eNofOptions
+typedef enum
+{
+	eAddFlight = 1, eAddAirport, ePrintCompany, ePrintAirports,
+	ePrintFlightOrigDest, eSortList, eSearchFlight, eNofOptions
 } eMenuOptions;
 
 const char* str[eNofOptions] = { "Add Flight", "Add Airport",
 								"PrintCompany", "Print all Airports",
-								"Print flights between origin-destination"};
-
-#define EXIT			-1
-int menu();
+								"Print flights between origin-destination", "Sort Flights", "Search Flight"};
 
 //==============================
 
@@ -53,17 +53,22 @@ int main()
 
 			case ePrintCompany:
 				printCompany(&company);
-				//L_print(company.headDate->next, printDate);
 				break;
 
 			case ePrintAirports:
-				//L_print(manager.headList->next, printAirport);
 				printAirports(&manager);
 				break;
 
 			case ePrintFlightOrigDest:
+				printFlightsCount(&company);
+				break;
+
+			case eSortList:
 				sortFlightList(&company);
-				//printFlightsCount(&company);
+				break;
+
+			case eSearchFlight:
+				searchFlight(&company, company.sortType);
 				break;
 
 			case EXIT:
@@ -92,12 +97,16 @@ int menu()
 	int option;
 	printf("\n\n");
 	printf("Please choose one of the following options\n");
-	for(int i = 0 ; i < eNofOptions ; i++)
-		printf("%d - %s\n",i,str[i]);
+
+	for(int i = 0 ; i < eNofOptions-1 ; i++)
+		printf("- %d - %s\n",i+1,str[i]);
+
 	printf("%d - Quit\n", EXIT);
 	scanf("%d", &option);
+
 	//clean buffer
 	char tav;
 	scanf("%c", &tav);
+
 	return option;
 }

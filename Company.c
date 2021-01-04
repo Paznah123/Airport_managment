@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "sortUtil.h"
+#include "listGen.h"
 #include "Company.h"
 #include "Airport.h"
 #include "General.h"
@@ -19,7 +22,7 @@ void	initCompany(Company* pComp)
 	pComp->headDate = pComp->listDate;
 	pComp->datesNumber = 0;
 	
-	pComp->sortType = sortNull;
+	pComp->sortType = eNull;
 }
 
 //==============================
@@ -106,14 +109,18 @@ void	printFlightArr(Flight** pFlight, int size)
 	}
 }
 
-//==============================
-
 void	printCompany(const Company* pComp)
 {
-	printf("Company %s:\n", pComp->name);
-	printf("Has %d flights\n", pComp->flightCount);
-	printFlightArr(pComp->flightArr, pComp->flightCount); // needs fix!! 
+	printf("Company %s: ", pComp->name);
+	printf("Has %d flights\n\n", pComp->flightCount);
+	printFlightArr(pComp->flightArr, pComp->flightCount);
+	if (pComp->headDate->next != NULL) {
+		printf("\n=== Date List ===");
+		L_print(pComp->headDate->next, printDate);
+	}
 }
+
+//==============================
 
 void	freeFlightArr(Flight** arr, int size)
 {
@@ -132,75 +139,57 @@ void	freeCompany(Company* pComp)
 
 // ====================================
 
-void sortFlightList(Company* pComp) {
+void	searchFlight(Company* pComp, eSortType searchType) {
 
-	int by, size = pComp->flightCount;
-	printf("Enter 1 to sort by hour\n");
-	printf("Enter 2 to sort by date\n");
-	printf("Enter 3 to sort by origin code\n");
-	printf("Enter 4 to sort by dest code\n");
-	
-	scanf("%d", &by);
+	char* searchParameter;
+	printf("enter search parameter:");
+	scanf("%s", &searchParameter);
+
+	switch (searchType)
+	{
+		case eHour:
+			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**),compareByHour);
+			break;
+		case eDate:
+			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**), compareByDate);
+			break;
+		case eOriginCode:
+			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**), compareByOriginCode);
+			break;
+		case eDestCode:
+			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**), compareByDestCode);
+			break;
+		case eNull:
+			printf("Flights Not Sorted!");
+			break;
+	}
+}
+// ====================================
+
+void	sortFlightList(Company* pComp) {
+
+	int by = sortMenu();
+
 	switch (by)
 	{
-	case sortHour:
-		qsort(pComp->flightArr, size, sizeof(Flight**), compareByHour);
-		pComp->sortType = sortHour;
-		break;
-	case sortDate:
-		qsort(pComp->flightArr, size, sizeof(Flight**), compareByDate);
-		pComp->sortType = sortDate;
-		break;
-	case sortOriginCode:
-		qsort(pComp->flightArr, size, sizeof(Flight**), compareByOriginCode);
-		pComp->sortType = sortHour;
-		break;
-	case sortDestCode:
-		qsort(pComp->flightArr, size, sizeof(Flight**), compareByDestCode);
-		pComp->sortType = sortDate;
-		break;
+		case eHour:
+			sort(pComp, eHour, compareByHour);
+			break;
+		case eDate:
+			sort(pComp, eDate, compareByDate);
+			break;
+		case eOriginCode:
+			sort(pComp, eOriginCode, compareByOriginCode);
+			break;
+		case eDestCode:
+			sort(pComp, eDestCode, compareByDestCode);
+			break;
 	}
+}
 
+void	sort(Company* pComp, eSortType sortType, void (*compare)(void*)) {
+	qsort(pComp->flightArr, pComp->flightCount, sizeof(Flight**), compare);
+	pComp->sortType = sortType;
 }
 
 // ====================================
-
-int compareByHour(const DATA a, const DATA b) {
-	Flight* flightA = *(Flight**)a;
-	Flight* flightB = *(Flight**)b;
-
-	if (flightA->hour < flightB->hour)
-		return -1;
-	else if (flightA->hour > flightB->hour)
-		return 1;
-	else
-		return 0;
-}
-
-int compareByDate(const DATA a, const DATA b) {
-	Flight** flightA = (Flight**)a;
-	Flight** flightB = (Flight**)b;
-
-	if (flightA[0]->date.year != flightB[0]->date.year)
-		return flightA[0]->date.year - flightB[0]->date.year;
-	else if (flightA[0]->date.month != flightB[0]->date.month)
-		return flightA[0]->date.month - flightB[0]->date.month;
-	else if (flightA[0]->date.day != flightB[0]->date.day)
-		return flightA[0]->date.day - flightB[0]->date.day;
-	return 0;
-}
-
-int compareByOriginCode(const DATA a, const DATA b) {
-	Flight** flightA = (Flight**)a;
-	Flight** flightB = (Flight**)b;
-
-	return strcmp(&flightA[0]->originCode, &flightB[0]->originCode);
-}
-
-int compareByDestCode(const DATA a, const DATA b) {
-	Flight** flightA = (Flight**)a;
-	Flight** flightB = (Flight**)b;
-
-	return strcmp(&flightA[0]->destCode ,&flightB[0]->destCode);
-}
-

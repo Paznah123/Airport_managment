@@ -1,4 +1,3 @@
-
 #ifndef __FILEWRITE__
 #define __FILEWRITE__
 
@@ -7,10 +6,11 @@
 
 // ==============================
 
-void writeAirportsToFile(AirportManager* pManager);
-void writeCompanyToFile(Company* pComp);
-void readManagerFromTextFile(AirportManager* pManager);
-void readCompanyFromFile();
-void file(AirportManager* pManager);
+void	writeAirportsToFile(AirportManager* pManager);
+void	writeCompanyToFile(Company* pComp);
+void	readManagerFromTextFile(AirportManager* pManager);
+void	readCompanyFromFile();
+
+// ====================================
 
 #endif

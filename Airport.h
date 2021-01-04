@@ -14,7 +14,7 @@ typedef struct
 
 //==============================
 
-int		compareAirportsByIATA(const void* p1, const void* p2);
+int		validateCode(char* code);
 int		isSameAirport(const Airport* pPort1, const Airport* pPort2);
 int		isAirportCode(const Airport* pPort1, const char* code);
 void	initAirportNoCode(Airport* pPort);
@@ -24,5 +24,7 @@ void	changeEvenWord(char* str);
 void    getAirportCode(char* code);
 void	freeAirport(Airport* pPort);
 void	getAirportCountry(Airport* pPort);
+
+//==============================
 
 #endif

@@ -4,13 +4,9 @@
 #include "Date.h"
 #include "Flight.h"
 #include "AirportManager.h"
+#include "sortUtil.h"
 
 //==============================
-
-typedef enum
-{
-	sortHour=1 , sortDate , sortOriginCode, sortDestCode , sortNull
-} eSortType;
 
 typedef struct
 {
@@ -34,11 +30,11 @@ void	printFlightsCount(const Company* pComp);
 void	printFlightArr(Flight** pFlight, int size);
 void	freeFlightArr(Flight** arr, int size);
 void	freeCompany(Company* pComp);
+void	searchFlight(Company* pComp, eSortType sortType);
 void	sortFlightList(Company* pComp);
-int		compareByHour(const DATA a, const DATA b);
-int		compareByDate(const DATA a, const DATA b);
-int		compareByOriginCode(const DATA a, const DATA b);
-int		compareByDestCode(const DATA a, const DATA b);
+void	sort(Company* pComp, eSortType sortType, void (*compare)(void*));
+
+// ====================================
 
 #endif
 

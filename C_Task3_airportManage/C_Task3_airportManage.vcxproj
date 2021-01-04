@@ -143,11 +143,11 @@
     <ClInclude Include="..\AirportManager.h" />
     <ClInclude Include="..\Company.h" />
     <ClInclude Include="..\Date.h" />
-    <ClInclude Include="..\def.h" />
     <ClInclude Include="..\fileWrite.h" />
     <ClInclude Include="..\Flight.h" />
     <ClInclude Include="..\General.h" />
     <ClInclude Include="..\listGen.h" />
+    <ClInclude Include="..\sortUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Airport.c" />
@@ -159,6 +159,7 @@
     <ClCompile Include="..\General.c" />
     <ClCompile Include="..\listGen.c" />
     <ClCompile Include="..\main.c" />
+    <ClCompile Include="..\sortUtil.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "Flight.h"
 
 //==============================
@@ -53,8 +54,9 @@ Airport*	setAiportToFlight(const AirportManager* pManager, const char* msg)
 
 int		isFlightInRoute(const Flight* pFlight,const char* codeSource, const char* codeDest)
 {
-	if ((strcmp(pFlight->originCode, codeSource) == 0) &&
-		(strcmp(pFlight->destCode, codeDest) == 0))
+	Flight** flight = (Flight**)pFlight;
+	if ((strcmp(flight[0]->originCode, codeSource) == 0) &&
+		(strcmp(flight[0]->destCode, codeDest) == 0))
 		return 1;
 
 	return 0;
@@ -77,12 +79,14 @@ int		countFlightsInRoute(Flight** arr, int size,const char* codeSource,
 
 void	printFlight(const Flight* pFlight)
 {
-	printf("Flight From %s To %s\t", pFlight->originCode, pFlight->destCode);
+	printf("Flight - %s -> %s | ", pFlight->originCode, pFlight->destCode);
+	printf("Hour: %d\t", pFlight->hour);
 	printDate(&pFlight->date);
-	printf("Hour: %d\n", pFlight->hour);
 }
 
 void	freeFlight(Flight* pFlight)
 {
 	free(pFlight);
 }
+
+//==============================

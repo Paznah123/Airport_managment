@@ -5,14 +5,11 @@
 
 #include "General.h"
 
-void trim(char* s) {
-	char* p = s;
-	int l = strlen(p);
-
-	while (isspace(p[l - 1])) p[--l] = 0;
-	while (*p && isspace(*p)) ++p, --l;
-
-	memmove(s, p, l + 1);
+void generalArrayFunction(void* arr, int length, int elementSize, void(*func)(void*)) {
+	for (int i = 0; i < length; i++)
+	{
+		func((char*)arr + i * elementSize);
+	}
 }
 
 //==============================
@@ -84,3 +81,5 @@ char**	splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 	*pCount = count;
 	return wordsArray;
 }
+
+//==============================

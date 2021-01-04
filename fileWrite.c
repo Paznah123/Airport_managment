@@ -101,36 +101,7 @@ void readManagerFromTextFile(AirportManager* pManager)
 		printf("Cannot open file %s\n", fileName);
 		return EXIT_FAILURE;
 	}
-	pManager->headList = pManager->listPtr;
-	fscanf(fp, "%d ", &pManager->count);
-
-	for (int i = 0; i < pManager->count; i++)
-	{
-		Airport* airport = (Airport*)malloc(sizeof(Airport));
-		char temp1[MAX_STR_LEN];
-		char temp2[MAX_STR_LEN];
-		fscanf(fp, "%s\n%s\n%s\n", temp1, temp2, airport->code);
-
-		airport->name = _strdup(&temp1);
-		airport->country = _strdup(&temp2);
-
-		pManager->listPtr = L_insertLast(pManager->listPtr, airport);
-	}
-
-	fclose(fp);
-}
-
-void file(AirportManager* pManager) {
-	char* fileName = "airport_authority.txt";
-	FILE* fp;
-
-	fp = fopen(fileName, "r");
-	if (fp == NULL) {
-		printf("Cannot open file %s\n", fileName);
-		return EXIT_FAILURE;
-	}
-	pManager->headList = pManager->listPtr;
-	fscanf(fp, "%d ", &pManager->count);
+	fscanf(fp, "%d \n", &pManager->count);
 
 	for (int i = 0; i < pManager->count; i++)
 	{
@@ -138,8 +109,14 @@ void file(AirportManager* pManager) {
 		char temp1[MAX_STR_LEN];
 		char temp2[MAX_STR_LEN];
 
-		fscanf(fp, "%s%[^\t\n]%s\n%s\n", temp1, temp2, airport->code);
-		
+		fgets(temp1, MAX_STR_LEN, fp);
+		fgets(temp2, MAX_STR_LEN, fp);
+
+		temp1[strlen(temp1) - 1] = '\0';
+		temp2[strlen(temp2) - 1] = '\0';
+
+		fscanf(fp, "%s \n", airport->code);
+
 		airport->name = _strdup(&temp1);
 		airport->country = _strdup(&temp2);
 

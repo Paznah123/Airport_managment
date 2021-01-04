@@ -1,7 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "sortUtil.h"
 #include "listGen.h"
 #include "Airport.h"
+
+/* Function to sort the list */
+int bubbleSort(NODE** head, int count)
+{
+	NODE** h;
+	int i, j, swapped;
+
+	for (i = 0; i <= count; i++) {
+		h = head;
+		swapped = 0;
+		for (j = 0; j < count - i - 1; j++) {
+			NODE* p1 = *h;
+			NODE* p2 = p1->next;
+			if (compareAirportsByIATA(p1->key,p2->key)) {
+				*h = swap(p1, p2);
+				swapped = 1;
+			}
+			h = &(*h)->next;
+		}
+		if (swapped == 0)
+			break;
+	}
+}
+
+NODE* swap(NODE* ptr1, NODE* ptr2)
+{
+	NODE* tmp = ptr2->next;
+	ptr2->next = ptr1;
+	ptr1->next = tmp;
+	return ptr2;
+}
 
 //////////////////////////////////////////
 // Init
@@ -40,6 +73,30 @@ NODE*	L_insertLast(NODE* pNode, DATA Value)
 	return tmp;
 }
 
+NODE* L_insertAfter(NODE* pNode, DATA Value)
+{
+	NODE* tmp;
+
+	if (!pNode) return NULL;
+
+	NODE* secondPointer = pNode;
+	NODE* firstPointer = pNode->next;
+	
+	tmp = (NODE*)malloc(sizeof(NODE));	// new node
+	while (firstPointer->next != NULL) {
+		if (compareAirportsByIATA(firstPointer->key, (Airport*)Value)) {
+			if (tmp != NULL) {
+				tmp->key = Value;
+				tmp->next = firstPointer;
+				secondPointer->next = tmp;
+			}
+		}
+		firstPointer = firstPointer->next;
+		secondPointer = secondPointer->next;
+	}
+	
+	return tmp;
+}
 //////////////////////////////////////////////////////////////
 // Delete
 // Aim:		erase node
@@ -139,8 +196,8 @@ void	L_forEach(NODE* list, int numOfElements, int elementSize, void (*func)(void
 		func(list->key);
 		list = list->next;
 	}
-
 }
 
+//==============================
 
 

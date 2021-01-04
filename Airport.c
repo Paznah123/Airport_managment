@@ -7,7 +7,6 @@
 #include "Airport.h"
 #include "General.h"
 
-
 //==============================
 
 void	initAirportNoCode(Airport* pPort)
@@ -18,6 +17,7 @@ void	initAirportNoCode(Airport* pPort)
 	pPort->country = getStrExactName("Enter airport country");
 }
 
+//============================== 
 
 int		isSameAirport(const Airport* pPort1, const Airport* pPort2)
 {
@@ -39,18 +39,27 @@ int		isAirportCode(const Airport* pPort1, const char* code)
 	return 0;
 }
 
-void	changeEvenWord(char* str)
+void	changeEvenWord(char* word)
 {
-	while (*str)
+	while (*word)
 	{
-		*str = toupper(*str);
-		str++;
-		*str = tolower(*str);
-		str++;
+		*word = toupper(*word);
+		word++;
+		*word = tolower(*word);
+		word++;
 	}
 }
 
-//==============================
+int validateCode(char* code) {
+	if (strlen(code) != CODE_LENGTH)
+	{
+		printf("code should be %d letters\n", CODE_LENGTH);
+		return 0;
+	}
+	return 1;
+}
+
+//============================== 
 
 void	getAirportCode(char* code)
 {
@@ -60,12 +69,9 @@ void	getAirportCode(char* code)
 		ok = 1;
 		printf("Enter airport code  - %d UPPER CASE letters\t", CODE_LENGTH);
 		myGets(temp, MAX_STR_LEN);
-		if (strlen(temp) != CODE_LENGTH)
-		{
-			printf("code should be %d letters\n", CODE_LENGTH);
+		if(!validateCode(&temp)){
 			ok = 0;
-		}
-		else {
+		} else {
 			for (int i = 0; i < 3; i++)
 			{
 				if (isupper(temp[i]) == 0)
@@ -80,6 +86,21 @@ void	getAirportCode(char* code)
 
 	strcpy(code, temp);
 }
+
+//============================== 
+
+void	getAirportCountry(Airport* pPort)
+{
+	char temp[255];
+	printf("Enter airport country\t");
+	myGets(temp, MAX_STR_LEN);
+	int len = strlen(temp) + 1;
+	pPort->country = (char*)malloc(sizeof(char) * len);
+	if (temp != NULL)
+		pPort->country = _strdup(&temp);
+}
+
+//==============================
 
 void	getAirportName(Airport* pPort)
 {
@@ -123,27 +144,7 @@ void	getAirportName(Airport* pPort)
 	free(wordsArray);
 }
 
-void	getAirportCountry(Airport* pPort)
-{
-	char temp[255];
-	printf("Enter airport country\t");
-	myGets(temp, MAX_STR_LEN);
-	int len = strlen(temp) + 1;
-	pPort->country = (char*)malloc(sizeof(char) * len);
-	if (temp != NULL)
-		pPort->country = _strdup(&temp);
-}
-
-//==============================
-
-int		compareAirportsByIATA(const void* p1, const void* p2)
-{
-	const Airport* ap1 = (Airport*)p1;
-	const Airport* ap2 = (Airport*)p2;
-	return strcmp(ap1->code, ap2->code);
-}
-
-//==============================
+//============================== 
 
 void	printAirport(const Airport* pPort)
 {
@@ -157,3 +158,5 @@ void	freeAirport(Airport* pPort)
 	free(pPort->name);
 	free(pPort->country);
 }
+
+//==============================
