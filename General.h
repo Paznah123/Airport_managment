@@ -1,5 +1,4 @@
-#ifndef __GENERAL__
-#define __GENERAL__
+#pragma once
 
 #define MAX_STR_LEN 255
 #define CODE_LENGTH 3
@@ -20,5 +19,4 @@ char*	myGets(char* buffer, int size);
 char*	getDynStr(char* str);
 char**	splitCharsToWords(char* str,int* pCount,int* pTotalLength);
 
-#endif
 

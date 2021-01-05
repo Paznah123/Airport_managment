@@ -1,5 +1,4 @@
-#ifndef __MYDATE__
-#define __MYDATE__
+#pragma once
 
 #include "listGen.h"
 
@@ -22,4 +21,3 @@ void	printDate(const Date* pDate);
 
 //==============================
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef __AIR_MANAGER__
-#define __AIR_MANAGER__
+#pragma once
 
 #include "Airport.h"
 #include "listGen.h"
@@ -24,5 +23,3 @@ void		freeManager(AirportManager* pManager);
 void		printAirports(const AirportManager* pManager);
 
 //==============================
-
-#endif

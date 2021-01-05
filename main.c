@@ -29,12 +29,9 @@ int main()
 {
 	AirportManager	manager;
 	Company			company;
-	/*if () {
-		readManagerFromTextFile(&manager);
-		readCompanyFromFile(&company);
-	} else {*/
-		initManager(&manager);
-		initCompany(&company);
+
+	readFiles(&manager, &company);
+
 	int option;
 	int stop = 0;
 	
@@ -72,8 +69,8 @@ int main()
 				break;
 
 			case EXIT:
-				writeAirportsToFile(&manager);
-				writeCompanyToFile(&company);
+				writeManagerToTextFile(&manager);
+				writeCompanyToBinFile(&company);
 				printf("Bye bye\n");
 				stop = 1;
 				break;
@@ -84,9 +81,9 @@ int main()
 		}
 	} while (!stop);
 
-	// needs fix
 	//freeManager(&manager);
 	//freeCompany(&company);
+
 	return 1;
 }
 

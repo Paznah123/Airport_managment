@@ -1,5 +1,4 @@
-#ifndef __AIRPORT__
-#define __AIRPORT__
+#pragma once
 
 #include "General.h"
 
@@ -26,5 +25,3 @@ void	freeAirport(Airport* pPort);
 void	getAirportCountry(Airport* pPort);
 
 //==============================
-
-#endif

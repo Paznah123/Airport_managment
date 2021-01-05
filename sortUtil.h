@@ -1,5 +1,4 @@
-#ifndef _SORTUTIL_
-#define _SORTUTIL_
+#pragma once
 
 #include "General.h"
 
@@ -20,5 +19,3 @@ int		compareByDestCode(const DATA a, const DATA b);
 int		compareAirportsByIATA(const DATA p1, const DATA p2);
 
 // ====================================
-
-#endif

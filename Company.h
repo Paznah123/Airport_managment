@@ -1,5 +1,4 @@
-#ifndef __COMP__
-#define __COMP__
+#pragma once
 
 #include "Date.h"
 #include "Flight.h"
@@ -35,6 +34,3 @@ void	sortFlightList(Company* pComp);
 void	sort(Company* pComp, eSortType sortType, void (*compare)(void*));
 
 // ====================================
-
-#endif
-

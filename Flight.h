@@ -1,5 +1,4 @@
-#ifndef __FLIGHT__
-#define __FLIGHT__
+#pragma once
 
 #include "AirportManager.h"
 #include "Date.h"
@@ -25,4 +24,3 @@ void		printFlight(const Flight* pFlight);
 void		initFlight(Flight* pFlight, const AirportManager* pManager);
 void		freeFlight(Flight* pFlight);
 
-#endif

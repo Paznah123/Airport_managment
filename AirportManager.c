@@ -49,14 +49,8 @@ int		addAirport(AirportManager* pManager)
 		return 0;
 	setAirport(temp, pManager);
 	NODE* pList = &pManager->headList;
-	//while (pList->next) {
-	//	if (compareAirportsByIATA(temp, pList->next->key) < 0) {
-			pManager->listPtr = L_insertAfter(pList->next, temp);
-	//		break;
-	//	}
-	//}
-	//pManager->listPtr = L_insertLast(pManager->listPtr, temp);
-	//bubbleSort(&pManager->headList->next, pManager->count);
+
+	addLNodeToList(pManager->headList, temp, inputLocationOfAirport);
 	pManager->count++;
 	return 1;
 }
@@ -105,10 +99,11 @@ int		checkUniqeCode(const char* code,const AirportManager* pManager)
 void	printAirports(const AirportManager* pManager)
 {
 	printf("there are %d airports\n", pManager->count);
-	NODE* pointerAirport = pManager->headList;
+	NODE* pointerAirport = pManager->headList->next;
 	for (int i = 0; i < pManager->count; i++)
 	{
-		printAirport(pointerAirport->next->key);
+		Airport* tmp = (Airport*)pointerAirport->key;
+		printAirport(tmp);
 		printf("\n");
 		pointerAirport = pointerAirport->next;
 	}
@@ -116,7 +111,7 @@ void	printAirports(const AirportManager* pManager)
 
 void	freeManager(AirportManager* pManager)
 {
-	for (int i = 1; i < pManager->count; i++)
+	for (int i = 0; i < pManager->count; i++)
 	{
 		L_free(&pManager->headList, freeAirport);
 	}

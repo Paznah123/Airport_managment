@@ -2,11 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fileWrite.h"
-
 #include "AirportManager.h"
 #include "Company.h"
+#include "listGen.h"
 
-void writeAirportsToFile(AirportManager* pManager) {
+void readFiles(AirportManager* pManager, Company* pComp) {
+	char* fileName = "airport_authority.txt";
+	FILE* fp = fopen(fileName, "r");
+	char* binFileName = "company.bin";
+	FILE* fBinp = fopen(binFileName, "rb");
+
+	if (fp) {
+		readManagerFromTextFile(pManager);
+	}
+	else
+		initManager(pManager);
+	if (fBinp) {
+		readCompanyFromBinFile(pComp);
+	}
+	else
+		initCompany(pComp);
+}
+
+// ==========================================
+
+void writeManagerToTextFile(AirportManager* pManager) {
 	char* fileName = "airport_authority.txt";
 	FILE* fp;
 
@@ -31,67 +51,10 @@ void writeAirportsToFile(AirportManager* pManager) {
 
 // ==========================================
 
-void writeCompanyToFile(Company* pComp) {
-	char* fileName = "comapny.bin";
-	FILE* fp;
-
-	// Open file for writing
-	fp = fopen(fileName, "w+");
-	if (fp == NULL) {
-		printf("Cannot open file %s\n", fileName);
-		return EXIT_FAILURE;
-	}
-	int nameLen = strlen(pComp->name);
-
-	fwrite(&nameLen, sizeof(int), 1, fp);
-	fwrite(&pComp->name, sizeof(char) * nameLen, 1, fp);
-	fwrite(&pComp->flightCount, sizeof(int), 1, fp);
-
-	for (int i = 0; i < pComp->flightCount; i++)
-	{
-		if (fwrite(&pComp->flightArr[i], sizeof(Flight), 1, fp) != 1) {
-			fclose(fp);
-			return;
-		}
-	}
-
-	fclose(fp);
-}
-
-void readCompanyFromFile()
-{
-	char* fileName = "comapny.bin";
-	FILE* fp;
-
-	// Open file for writing
-	fp = fopen(fileName, "rb");
-	if (fp == NULL) {
-		printf("Cannot open file %s\n", fileName);
-		return EXIT_FAILURE;
-	}
-	/*int nameLen = strlen(pComp->name);
-	fread(&nameLen, sizeof(int), 1, fp);
-	fread(&pComp->name, sizeof(char) * nameLen, 1, fp);
-	fread(&pComp->flightCount, sizeof(int), 1, fp);
-
-	for (int i = 0; i < 4; i++)
-	{
-		Flight flight;
-		if (fread(&flight, sizeof(Flight), 1, fp) != 1) {
-			fclose(fp);
-			return;
-		}
-		printf("Flight: %s - %s - %d - %d//%d//%d", flight.originCode,
-			flight.destCode, flight.hour, flight.date.day, flight.date.month, flight.date.year);
-	}
-	*/
-	fclose(fp);
-}
-
-
-// needs fix !
 void readManagerFromTextFile(AirportManager* pManager)
 {
+	pManager->headList = (NODE*)malloc(sizeof(NODE));
+	pManager->headList->next = NULL;
 	char* fileName = "airport_authority.txt";
 	FILE* fp;
 
@@ -120,8 +83,58 @@ void readManagerFromTextFile(AirportManager* pManager)
 		airport->name = _strdup(&temp1);
 		airport->country = _strdup(&temp2);
 
-		pManager->listPtr = L_insertLast(pManager->listPtr, airport);
+		addLNodeToList(pManager->headList, airport, inputLocationOfAirport);
 	}
-
 	fclose(fp);
 }
+
+// ==========================================
+
+int writeCompanyToBinFile(Company* pComp) {
+	FILE* fb = fopen("company.bin", "wb");
+	if (!fb)return 0;
+
+	int companyNameLength = strlen(pComp->name) + 1;
+	fwrite(&companyNameLength, sizeof(int), 1, fb);
+	fwrite(pComp->name, sizeof(char), companyNameLength, fb);
+	fwrite(&pComp->flightCount, sizeof(int), 1, fb);
+	fwrite(&pComp->sortType, sizeof(int), 1, fb);
+
+	for (int i = 0; i < pComp->flightCount; i++)
+	{
+		fwrite(pComp->flightArr[i], sizeof(Flight), 1, fb);
+	}
+	fclose(fb);
+}
+
+// ==========================================
+
+int readCompanyFromBinFile(Company* pComp) {
+	FILE* fB = fopen("company.bin", "rb");
+	int companyNameLength;
+	pComp->flightArr = NULL;
+	pComp->flightCount = 0;
+	L_init(&pComp->headDate);
+	pComp->sortType = 0;
+	
+	fread(&companyNameLength, sizeof(int), 1, fB);
+	pComp->name = (char*)malloc(companyNameLength * sizeof(char));
+	fread(pComp->name, sizeof(char), companyNameLength, fB);
+	fread(&pComp->flightCount, sizeof(int), 1, fB);
+	fread(&pComp->sortType, sizeof(int), 1, fB);
+	pComp->flightArr = (Flight**)malloc(pComp->flightCount * sizeof(Flight*));
+	if (!pComp->flightArr)
+		return 0;
+
+	for (int i = 0; i < pComp->flightCount; i++)
+	{
+		Flight* f1 = (Flight*)malloc(sizeof(Flight));
+		if (!f1)
+			return 0;
+		fread(f1, sizeof(Flight), 1, fB);
+		pComp->flightArr[i] = f1;
+		L_push(&pComp->headDate->next, &f1->date);
+	}
+}
+
+// ==========================================

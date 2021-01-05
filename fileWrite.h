@@ -1,16 +1,14 @@
-#ifndef __FILEWRITE__
-#define __FILEWRITE__
+#pragma once
 
 #include "AirportManager.h"
 #include "Company.h"
 
 // ==============================
 
-void	writeAirportsToFile(AirportManager* pManager);
-void	writeCompanyToFile(Company* pComp);
+void	readFiles(AirportManager* pManager, Company* pComp);
+void	writeManagerToTextFile(AirportManager* pManager);
 void	readManagerFromTextFile(AirportManager* pManager);
-void	readCompanyFromFile();
+int		readCompanyFromBinFile(Company* pComp);
+int		writeCompanyToBinFile(Company* pComp);
 
 // ====================================
-
-#endif

@@ -5,67 +5,27 @@
 #include "listGen.h"
 #include "Airport.h"
 
-/* Function to sort the list */
-int bubbleSort(NODE** head, int count)
-{
-	NODE** h;
-	int i, j, swapped;
+//================================
 
-	for (i = 0; i <= count; i++) {
-		h = head;
-		swapped = 0;
-		for (j = 0; j < count - i - 1; j++) {
-			NODE* p1 = *h;
-			NODE* p2 = p1->next;
-			if (compareAirportsByIATA(p1->key,p2->key)) {
-				*h = swap(p1, p2);
-				swapped = 1;
-			}
-			h = &(*h)->next;
-		}
-		if (swapped == 0)
-			break;
-	}
-}
-
-NODE* swap(NODE* ptr1, NODE* ptr2)
-{
-	NODE* tmp = ptr2->next;
-	ptr2->next = ptr1;
-	ptr1->next = tmp;
-	return ptr2;
-}
-
-//////////////////////////////////////////
-// Init
-// Aim:		create new list
-// Input:	pointer to the list structure
-// Output:	TRUE if succeeded
-//////////////////////////////////////////
 BOOL	L_init(NODE* pList)
 {
 	pList->key = (Airport*)malloc(sizeof(Airport));
-	if ( pList == NULL ) return False;	// no list to initialize
+	if (pList == NULL) return False;	// no list to initialize
 	pList->next = NULL;
 	return True;
 }
 
-/////////////////////////////////////////////////////////////////
-// Insert
-// Aim:		add new node
-// Input:	pointer to the node BEFORE the place for the new one
-//			a value to be stored in the new node
-// Output:	pointer to the new node
-/////////////////////////////////////////////////////////////////
+//================================
+
 NODE*	L_insertLast(NODE* pNode, DATA Value)
 {
 	NODE* tmp;
 
-	if ( !pNode ) return NULL;
+	if (!pNode) return NULL;
 
 	tmp = (NODE*)malloc(sizeof(NODE));	// new node
 
-	if ( tmp != NULL )  {
+	if (tmp != NULL) {
 		tmp->key = Value;
 		pNode->next = tmp;
 		tmp->next = NULL;
@@ -73,36 +33,46 @@ NODE*	L_insertLast(NODE* pNode, DATA Value)
 	return tmp;
 }
 
-NODE* L_insertAfter(NODE* pNode, DATA Value)
-{
-	NODE* tmp;
+//================================
 
-	if (!pNode) return NULL;
-
-	NODE* secondPointer = pNode;
-	NODE* firstPointer = pNode->next;
-	
-	tmp = (NODE*)malloc(sizeof(NODE));	// new node
-	while (firstPointer->next != NULL) {
-		if (compareAirportsByIATA(firstPointer->key, (Airport*)Value)) {
-			if (tmp != NULL) {
-				tmp->key = Value;
-				tmp->next = firstPointer;
-				secondPointer->next = tmp;
-			}
-		}
-		firstPointer = firstPointer->next;
-		secondPointer = secondPointer->next;
+int		addLNodeToList(NODE* head, void* data, NODE* (whereToAdd)(const *NODE, const void*)) {
+	if (!head)
+	{
+		printf("List hasn't been initiated!\n");
+		return 0;
 	}
-	
-	return tmp;
+	// Allocate new node
+	NODE* newLNode = (NODE*)malloc(sizeof(NODE));
+	if (!newLNode)
+	{
+		return 0;
+	}
+	newLNode->key = data; 
+	NODE* wTA = (*whereToAdd)(head, data);
+	if (!wTA) {
+		free(newLNode);
+		return 0;
+	}
+	newLNode->next = wTA->next;
+	wTA->next = newLNode;
+	return 1;
 }
-//////////////////////////////////////////////////////////////
-// Delete
-// Aim:		erase node
-// Input:	pointer to the node BEFORE the node to be deleted 
-// Output:	TRUE if succeeded
-//////////////////////////////////////////////////////////////
+
+//================================
+
+// Create a node with the data equal value and place it at the head of the list
+void	L_push(NODE** head, DATA data) {
+	
+	NODE* new_node = (NODE*)malloc(sizeof(NODE));
+
+	new_node->key = data;
+	new_node->next = *head;
+
+	*head = new_node;
+}
+
+//================================
+
 BOOL	L_delete(NODE* pNode,void (*freeFunc)(void*))
 {
 	NODE* tmp;
@@ -116,38 +86,8 @@ BOOL	L_delete(NODE* pNode,void (*freeFunc)(void*))
 	return True;
 }
 
-/////////////////////////////////////////////////////////
-// Find
-// Aim:		search for a value
-// Input:	pointer to the node to start with 
-//			a value to be found
-// Output:	pointer to the node containing the Value
-/////////////////////////////////////////////////////////
-NODE*	L_find(NODE* pNode, DATA value, int(*compare)(const void*, const void*))
-{
-	NODE* temp = NULL;
-	if ( !pNode ) return NULL;
-	while(pNode!= NULL)
-	{
-		if(compare(pNode->key,value) == 0)
-		{
-			temp = pNode;
-			break;
-		}
-		pNode = pNode->next;
-	}
+//================================
 
-	return temp;
-
-
-}
-
-//////////////////////////////////////////////////
-//// Free (additional function)
-//// Aim:		free the list memory
-//// Input:	pointer to the list structure
-//// Output:	TRUE if succeeded
-//////////////////////////////////////////////////
 BOOL	L_free(NODE* pList, void (*freeFunc)(void*))
 {
 	NODE *tmp;
@@ -163,12 +103,8 @@ BOOL	L_free(NODE* pList, void (*freeFunc)(void*))
 	return True;
 }
 
-////////////////////////////////////////////////
-// Print (additional function)
-// Aim:		print the list content (assume the DATA is int)
-// Input:	pointer to the list structure
-// Output:	a number of the printed elements
-////////////////////////////////////////////////
+//================================
+
 int		L_print(NODE* pList, void(*print)(const void*))
 {
 	NODE	*tmp = pList;
@@ -185,19 +121,23 @@ int		L_print(NODE* pList, void(*print)(const void*))
 	return c;
 }
 
-// For each member of  Linked List call function func with data as a single argument
-void	L_forEach(NODE* list, int numOfElements, int elementSize, void (*func)(void* data)) {
-	for (int i = 0; i < numOfElements; i++)
+//================================
+
+NODE*	inputLocationOfAirport(const NODE* head, const void* data) {
+	if (!head->next)
 	{
-		func(list->key);
-		list = list->next;
+		return head;
 	}
-	while (list != NULL) {
-		func(list->key);
-		list = list->next;
+	NODE* current = head;
+	while (current->next)
+	{
+		if (strcmp(((Airport*)current->next->key)->code, ((Airport*)data)->code) > 0)
+		{
+			break;
+		}
+		current = current->next;
 	}
+	return current;
 }
 
 //==============================
-
-
