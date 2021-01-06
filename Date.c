@@ -5,7 +5,7 @@
 #include "General.h"
 #include "Company.h"
 #include "Date.h"
-#include "listGen.h"
+#include "LinkedList.h"
 
 const int DAY_MONTHS[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
 
@@ -32,7 +32,7 @@ int		checkDate(char* date, Date* pDate)
 	int day, month, year;
 	if (strlen(date) != 10)
 		return 0;
-	if ( (date[2] != '/') || (date[5] != '/'))
+	if ((date[2] != '/') || (date[5] != '/'))
 		return 0;
 	sscanf(date, "%d/%d/%d", &day, &month, &year);
 	if (day < 1 || month < 1 || month > 12 || year < MIN_YEAR)

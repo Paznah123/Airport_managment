@@ -17,11 +17,10 @@ int		validateCode(char* code);
 int		isSameAirport(const Airport* pPort1, const Airport* pPort2);
 int		isAirportCode(const Airport* pPort1, const char* code);
 void	initAirportNoCode(Airport* pPort);
-void	printAirport(const Airport* pPort);
 void	getAirportName(Airport* pPort);
-void	changeEvenWord(char* str);
 void    getAirportCode(char* code);
+void	printAirport(const Airport* pPort);
+void	changeEvenWord(char* str);
 void	freeAirport(Airport* pPort);
-void	getAirportCountry(Airport* pPort);
 
 //==============================

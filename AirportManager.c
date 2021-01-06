@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "FileWrite.h"
+#include "FileUtil.h"
 #include "AirportManager.h"
+#include "LinkedList.h"
 
 //==============================
 
@@ -11,10 +12,7 @@ int		initManager(AirportManager* pManager)
 {
 	printf("-----------  Init airport Manager\n");
 	pManager->count = 0;
-	L_init(&pManager->headList);
-	L_init(&pManager->listPtr);
-	pManager->listPtr = pManager->headList;
-	readManagerFromTextFile(pManager);
+	L_init(&pManager->airportList);
 
 	int count = 0;
 	do {
@@ -45,12 +43,11 @@ int		addAirport(AirportManager* pManager)
 	Airport* temp = (Airport*)malloc(sizeof(Airport));
 	if (!temp)
 		return 0;
-	if (!pManager->listPtr)
-		return 0;
-	setAirport(temp, pManager);
-	NODE* pList = &pManager->headList;
 
-	addLNodeToList(pManager->headList, temp, inputLocationOfAirport);
+	setAirport(temp, pManager);
+	
+	addLNodeToList(&pManager->airportList.head, temp, insertAirportToList);
+
 	pManager->count++;
 	return 1;
 }
@@ -73,7 +70,7 @@ void	setAirport(Airport* pPort, AirportManager* pManager)
 
 Airport*	findAirportByCode(const AirportManager* pManager, const char* code)
 {
-	NODE* pointerAirport = pManager->headList->next;
+	NODE* pointerAirport = pManager->airportList.head.next;
 	for (int i = 0; i < pManager->count; i++){
 		Airport* airport = pointerAirport->key;
 		if (isAirportCode(airport, code)) 
@@ -99,21 +96,14 @@ int		checkUniqeCode(const char* code,const AirportManager* pManager)
 void	printAirports(const AirportManager* pManager)
 {
 	printf("there are %d airports\n", pManager->count);
-	NODE* pointerAirport = pManager->headList->next;
-	for (int i = 0; i < pManager->count; i++)
-	{
-		Airport* tmp = (Airport*)pointerAirport->key;
-		printAirport(tmp);
-		printf("\n");
-		pointerAirport = pointerAirport->next;
-	}
+	L_print(&pManager->airportList.head, printAirport);
 }
 
 void	freeManager(AirportManager* pManager)
 {
 	for (int i = 0; i < pManager->count; i++)
 	{
-		L_free(&pManager->headList, freeAirport);
+		L_free(&pManager->airportList.head, freeAirport);
 	}
 }
 

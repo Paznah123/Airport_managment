@@ -10,8 +10,7 @@
 typedef struct
 {
 	char*		name;
-	NODE*		headDate;
-	NODE*		listDate;
+	LIST		dateList;
 	int			datesNumber;
 	int			flightCount;
 	Flight**	flightArr;
@@ -32,5 +31,7 @@ void	freeCompany(Company* pComp);
 void	searchFlight(Company* pComp, eSortType sortType);
 void	sortFlightList(Company* pComp);
 void	sort(Company* pComp, eSortType sortType, void (*compare)(void*));
+
+void printDates(Company* pComp);
 
 // ====================================

@@ -143,10 +143,10 @@
     <ClInclude Include="..\AirportManager.h" />
     <ClInclude Include="..\Company.h" />
     <ClInclude Include="..\Date.h" />
-    <ClInclude Include="..\fileWrite.h" />
+    <ClInclude Include="..\FileUtil.h" />
     <ClInclude Include="..\Flight.h" />
     <ClInclude Include="..\General.h" />
-    <ClInclude Include="..\listGen.h" />
+    <ClInclude Include="..\LinkedList.h" />
     <ClInclude Include="..\sortUtil.h" />
   </ItemGroup>
   <ItemGroup>
@@ -154,10 +154,10 @@
     <ClCompile Include="..\AirportManager.c" />
     <ClCompile Include="..\Company.c" />
     <ClCompile Include="..\Date.c" />
-    <ClCompile Include="..\fileWrite.c" />
+    <ClCompile Include="..\FileUtil.c" />
     <ClCompile Include="..\Flight.c" />
     <ClCompile Include="..\General.c" />
-    <ClCompile Include="..\listGen.c" />
+    <ClCompile Include="..\LinkedList.c" />
     <ClCompile Include="..\main.c" />
     <ClCompile Include="..\sortUtil.c" />
   </ItemGroup>

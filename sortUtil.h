@@ -17,5 +17,6 @@ int		compareByDate(const DATA a, const DATA b);
 int		compareByOriginCode(const DATA a, const DATA b);
 int		compareByDestCode(const DATA a, const DATA b);
 int		compareAirportsByIATA(const DATA p1, const DATA p2);
+int		compareDate(const DATA a, const DATA b);
 
 // ====================================

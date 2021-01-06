@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include "sortUtil.h"
-#include "listGen.h"
+#include "LinkedList.h"
 #include "Company.h"
 #include "Airport.h"
 #include "General.h"
@@ -14,14 +14,12 @@ void	initCompany(Company* pComp)
 {
 	printf("-----------  Init Airline Company\n");
 	pComp->name = getStrExactName("Enter company name");
-	pComp->flightArr = NULL;
-	pComp->flightCount = 0;
 	
-	L_init(&pComp->headDate);
-	pComp->listDate = L_insertLast(&(pComp->headDate), NULL);
-	pComp->headDate = pComp->listDate;
+	L_init(&pComp->dateList);
+
 	pComp->datesNumber = 0;
-	
+	pComp->flightCount = 0;
+	pComp->flightArr = NULL;
 	pComp->sortType = eNull;
 }
 
@@ -42,7 +40,7 @@ int		addFlight(Company* pComp,const AirportManager* pManager)
 		return 0;
 	initFlight(pComp->flightArr[pComp->flightCount],pManager);
 	if (checkDateExists(&pComp->flightArr[pComp->flightCount]->date, pComp) == False) {
-		pComp->listDate = L_insertLast(pComp->listDate, &pComp->flightArr[pComp->flightCount]->date);
+		addLNodeToList(&pComp->dateList.head, &pComp->flightArr[pComp->flightCount]->date, insertDateToList);
 		pComp->datesNumber++;
 	}
 	pComp->flightCount++;
@@ -53,10 +51,9 @@ int		addFlight(Company* pComp,const AirportManager* pManager)
 
 BOOL	checkDateExists(Date* date, Company* pComp) 
 {
-	NODE* listDate = pComp->headDate->next;
-	for (int i = 0; i < pComp->datesNumber; i++)
-	{
-		Date* dateInList = (Date*)listDate->key;
+	NODE* listDate = &pComp->dateList.head;
+	while(listDate->next){
+		Date* dateInList = (Date*)listDate->next->key;
 		if (isDateEqual(date, dateInList) == True) 
 			return True;
 		listDate = listDate->next;
@@ -109,15 +106,23 @@ void	printFlightArr(Flight** pFlight, int size)
 	}
 }
 
+
+void printDates(Company* pComp) {
+	NODE* pHead = &pComp->dateList.head;
+	while (pHead->next) {
+		printDate(pHead->next->key);
+		pHead = pHead->next;
+	}
+}
+
 void	printCompany(const Company* pComp)
 {
 	printf("Company %s: ", pComp->name);
 	printf("Has %d flights\n\n", pComp->flightCount);
 	printFlightArr(pComp->flightArr, pComp->flightCount);
-	if (pComp->headDate->next != NULL) {
-		printf("\n=== Date List ===");
-		L_print(pComp->headDate->next, printDate);
-	}
+	printf("\n=== Date List ===\n");
+	printDates(pComp);
+	
 }
 
 //==============================
@@ -135,6 +140,7 @@ void	freeCompany(Company* pComp)
 	freeFlightArr(pComp->flightArr, pComp->flightCount);
 	free(pComp->flightArr);
 	free(pComp->name);
+	L_free(&pComp->dateList.head,NULL);
 }
 
 // ====================================

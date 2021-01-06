@@ -1,25 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fileWrite.h"
+
+#include "FileUtil.h"
 #include "AirportManager.h"
 #include "Company.h"
-#include "listGen.h"
+#include "LinkedList.h"
 
 void readFiles(AirportManager* pManager, Company* pComp) {
 	char* fileName = "airport_authority.txt";
-	FILE* fp = fopen(fileName, "r");
+	FILE* f_txt = fopen(fileName, "r");
 	char* binFileName = "company.bin";
-	FILE* fBinp = fopen(binFileName, "rb");
+	FILE* f_bin = fopen(binFileName, "rb");
 
-	if (fp) {
+	if (f_txt)
 		readManagerFromTextFile(pManager);
-	}
 	else
 		initManager(pManager);
-	if (fBinp) {
+
+	if (f_bin)
 		readCompanyFromBinFile(pComp);
-	}
 	else
 		initCompany(pComp);
 }
@@ -30,7 +30,6 @@ void writeManagerToTextFile(AirportManager* pManager) {
 	char* fileName = "airport_authority.txt";
 	FILE* fp;
 
-	// Open file for writing
 	fp = fopen(fileName, "w+");
 	if (fp == NULL) {
 		printf("Cannot open file %s\n", fileName);
@@ -38,9 +37,9 @@ void writeManagerToTextFile(AirportManager* pManager) {
 	}
 
 	fprintf(fp, "%d\n", pManager->count);
-	NODE* node = pManager->headList->next;
+	NODE* node = &pManager->airportList.head;
 	for (int i = 0; i < pManager->count; i++) {
-		Airport* airport = (Airport*)node->key;
+		Airport* airport = (Airport*)node->next->key;
 		fprintf(fp, "%s\n%s\n%s\n",
 			airport->name, airport->country, airport->code);
 		node = node->next;
@@ -53,12 +52,10 @@ void writeManagerToTextFile(AirportManager* pManager) {
 
 void readManagerFromTextFile(AirportManager* pManager)
 {
-	pManager->headList = (NODE*)malloc(sizeof(NODE));
-	pManager->headList->next = NULL;
+	L_init(&pManager->airportList);
 	char* fileName = "airport_authority.txt";
 	FILE* fp;
 
-	// Open file for writing
 	fp = fopen(fileName, "r");
 	if (fp == NULL) {
 		printf("Cannot open file %s\n", fileName);
@@ -83,7 +80,7 @@ void readManagerFromTextFile(AirportManager* pManager)
 		airport->name = _strdup(&temp1);
 		airport->country = _strdup(&temp2);
 
-		addLNodeToList(pManager->headList, airport, inputLocationOfAirport);
+		addLNodeToList(&pManager->airportList.head, airport, insertAirportToList);
 	}
 	fclose(fp);
 }
@@ -110,11 +107,18 @@ int writeCompanyToBinFile(Company* pComp) {
 // ==========================================
 
 int readCompanyFromBinFile(Company* pComp) {
-	FILE* fB = fopen("company.bin", "rb");
+	char* fileName = "company.bin";
+	FILE* fB = fopen(fileName, "rb");
+	if (fB == NULL) {
+		printf("Cannot open file %s\n", fileName);
+		return EXIT_FAILURE;
+	}
+
 	int companyNameLength;
 	pComp->flightArr = NULL;
 	pComp->flightCount = 0;
-	L_init(&pComp->headDate);
+	L_init(&pComp->dateList);
+	pComp->datesNumber = 0;
 	pComp->sortType = 0;
 	
 	fread(&companyNameLength, sizeof(int), 1, fB);
@@ -122,6 +126,7 @@ int readCompanyFromBinFile(Company* pComp) {
 	fread(pComp->name, sizeof(char), companyNameLength, fB);
 	fread(&pComp->flightCount, sizeof(int), 1, fB);
 	fread(&pComp->sortType, sizeof(int), 1, fB);
+
 	pComp->flightArr = (Flight**)malloc(pComp->flightCount * sizeof(Flight*));
 	if (!pComp->flightArr)
 		return 0;
@@ -133,7 +138,9 @@ int readCompanyFromBinFile(Company* pComp) {
 			return 0;
 		fread(f1, sizeof(Flight), 1, fB);
 		pComp->flightArr[i] = f1;
-		L_push(&pComp->headDate->next, &f1->date);
+		if (checkDateExists(&f1->date, pComp) == False) {
+			L_insertAfter(&pComp->dateList.head, &f1->date);
+		}
 	}
 }
 

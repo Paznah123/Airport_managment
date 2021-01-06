@@ -86,3 +86,17 @@ int		compareAirportsByIATA(const DATA p1, const DATA p2)
 
 // ====================================
 
+int compareDate(const DATA a, const DATA b) {
+	Date* dateA = (Date*)a;
+	Date* dateB = (Date*)b;
+
+	if (dateA->year != dateB->year)
+		return dateA->year - dateB->year;
+	else if (dateA->month != dateB->month)
+		return dateA->month - dateB->month;
+	else if (dateA->day != dateB->day)
+		return dateA->day - dateB->day;
+	return 0;
+}
+
+// ====================================

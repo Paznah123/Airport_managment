@@ -1,8 +1,6 @@
 ﻿#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <math.h>
-#include <ctype.h>
 
 #include "Airport.h"
 #include "General.h"
@@ -12,8 +10,6 @@
 void	initAirportNoCode(Airport* pPort)
 {
 	getAirportName(pPort);
-	//getAirportCountry(pPort);
-
 	pPort->country = getStrExactName("Enter airport country");
 }
 
@@ -72,7 +68,7 @@ void	getAirportCode(char* code)
 		if(!validateCode(&temp)){
 			ok = 0;
 		} else {
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < CODE_LENGTH; i++)
 			{
 				if (isupper(temp[i]) == 0)
 				{
@@ -85,19 +81,6 @@ void	getAirportCode(char* code)
 	} while (!ok);
 
 	strcpy(code, temp);
-}
-
-//============================== 
-
-void	getAirportCountry(Airport* pPort)
-{
-	char temp[255];
-	printf("Enter airport country\t");
-	myGets(temp, MAX_STR_LEN);
-	int len = strlen(temp) + 1;
-	pPort->country = (char*)malloc(sizeof(char) * len);
-	if (temp != NULL)
-		pPort->country = _strdup(&temp);
 }
 
 //==============================
@@ -135,7 +118,7 @@ void	getAirportName(Airport* pPort)
 		}
 		strcat(pPort->name, wordsArray[i]);
 		if (i != count - 1) //not last
-			strcat(pPort->name, "  ");
+			strcat(pPort->name, " ");
 	}
 
 	//clean temp data

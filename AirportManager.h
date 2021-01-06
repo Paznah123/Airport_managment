@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Airport.h"
-#include "listGen.h"
+#include "LinkedList.h"
 
 //==============================
 
 typedef struct
 {
-	NODE* headList;
-	NODE* listPtr;
+	LIST airportList;
 	int count;
 }AirportManager;
 

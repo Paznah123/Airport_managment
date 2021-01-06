@@ -1,6 +1,6 @@
 #pragma once
 
-#include "listGen.h"
+#include "LinkedList.h"
 
 #define MIN_YEAR 2020
 
