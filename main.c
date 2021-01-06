@@ -93,14 +93,16 @@ int main()
 int menu()
 {
 	int option;
-	printf("\n\n");
+	printf("\n======================\n");
 	printf("Please choose one of the following options\n");
 
 	for (int i = 0; i < eNofOptions - 1; i++)
 		printf("- %d - %s\n", i + 1, str[i]);
 
 	printf("%d - Quit\n", EXIT);
+	printf("====================== ");
 	scanf("%d", &option);
+	printf("\n");
 
 	//clean buffer
 	char tav;

@@ -6,10 +6,14 @@
 #include "Airport.h"
 #include "Date.h"
 
+//==============================
+
 void L_init(LIST* pList)
 {
     pList->head.next = NULL;
 }
+
+//==============================
 
 void L_print(const NODE* pHead, void (*print)(void*))
 {
@@ -21,42 +25,7 @@ void L_print(const NODE* pHead, void (*print)(void*))
     }
 }
 
-void L_insertAfter(NODE* prev_node, DATA new_data)
-{
-    if (prev_node == NULL)
-    {
-        printf("the given previous node cannot be NULL");
-        return;
-    }
-
-    NODE* new_node = (NODE*)malloc(sizeof(NODE));
-
-    new_node->key = new_data;
-    new_node->next = prev_node->next;
-
-    prev_node->next = new_node;
-}
-
-void L_insertLast(NODE** head_ref, DATA new_data)
-{
-    NODE* new_node = (NODE*)malloc(sizeof(NODE));
-    NODE* last = *head_ref;
-
-    new_node->key = new_data;
-    new_node->next = NULL;
-
-    if (*head_ref == NULL)
-    {
-        *head_ref = new_node;
-        return;
-    }
-
-    while (last->next != NULL)
-        last = last->next;
-
-    last->next = new_node;
-    return;
-}
+//==============================
 
 int L_delete(NODE* pNode, void (*freeFunc)(void*))
 {
@@ -71,6 +40,7 @@ int L_delete(NODE* pNode, void (*freeFunc)(void*))
     return 1;
 }
 
+//==============================
 
 BOOL	L_free(NODE* pList, void (*freeFunc)(void*))
 {

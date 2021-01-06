@@ -18,7 +18,6 @@ void	initCompany(Company* pComp)
 	
 	L_init(&pComp->dateList);
 
-	pComp->datesNumber = 0;
 	pComp->flightCount = 0;
 	pComp->flightArr = NULL;
 	pComp->sortType = eNull;
@@ -40,10 +39,8 @@ int		addFlight(Company* pComp,const AirportManager* pManager)
 	if (!pComp->flightArr[pComp->flightCount])
 		return 0;
 	initFlight(pComp->flightArr[pComp->flightCount],pManager);
-	if (checkDateExists(&pComp->flightArr[pComp->flightCount]->date, pComp) == False) {
+	if (checkDateExists(&pComp->flightArr[pComp->flightCount]->date, pComp) == False) 
 		insertNodeToList(&pComp->dateList.head, &pComp->flightArr[pComp->flightCount]->date, chooseDatePlace);
-		pComp->datesNumber++;
-	}
 	pComp->flightCount++;
 	return 1;
 }
@@ -55,20 +52,9 @@ BOOL	checkDateExists(Date* date, Company* pComp)
 	NODE* listDate = &pComp->dateList.head;
 	while(listDate->next){
 		Date* dateInList = (Date*)listDate->next->key;
-		if (isDateEqual(date, dateInList) == True) 
+		if (compareDate(date, dateInList) == 0)
 			return True;
 		listDate = listDate->next;
-	}
-	return False;
-}
-
-BOOL	isDateEqual(Date* date, Date* dateInList) {
-	if (dateInList->day == date->day &&
-		dateInList->month == date->month &&
-		dateInList->year == date->year)
-	{
-		printf("the date exists");
-		return True;
 	}
 	return False;
 }

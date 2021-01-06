@@ -95,7 +95,7 @@ int		checkUniqeCode(const char* code,const AirportManager* pManager)
 
 void	printAirports(const AirportManager* pManager)
 {
-	printf("there are %d airports\n", pManager->count);
+	printf("there are %d airports\n\n", pManager->count);
 	L_print(&pManager->airportList.head, printAirport);
 }
 

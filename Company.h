@@ -11,7 +11,6 @@ typedef struct
 {
 	char*		name;
 	LIST		dateList;
-	int			datesNumber;
 	int			flightCount;
 	Flight**	flightArr;
 	eSortType	sortType;
@@ -20,7 +19,6 @@ typedef struct
 //==============================
 
 BOOL	checkDateExists(Date* date, Company* pComp);
-BOOL	isDateEqual(Date* date, Date* dateInList);
 int		addFlight(Company* pComp, const AirportManager* pManager);
 void	initCompany(Company* pComp);
 void	printCompany(const Company* pComp);
