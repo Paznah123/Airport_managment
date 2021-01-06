@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "sortUtil.h"
+#include "searchUtil.h"
 #include "LinkedList.h"
 #include "Company.h"
 #include "Airport.h"
@@ -40,7 +41,7 @@ int		addFlight(Company* pComp,const AirportManager* pManager)
 		return 0;
 	initFlight(pComp->flightArr[pComp->flightCount],pManager);
 	if (checkDateExists(&pComp->flightArr[pComp->flightCount]->date, pComp) == False) {
-		addLNodeToList(&pComp->dateList.head, &pComp->flightArr[pComp->flightCount]->date, insertDateToList);
+		insertNodeToList(&pComp->dateList.head, &pComp->flightArr[pComp->flightCount]->date, chooseDatePlace);
 		pComp->datesNumber++;
 	}
 	pComp->flightCount++;
@@ -119,10 +120,9 @@ void	printCompany(const Company* pComp)
 {
 	printf("Company %s: ", pComp->name);
 	printf("Has %d flights\n\n", pComp->flightCount);
-	printFlightArr(pComp->flightArr, pComp->flightCount);
+	generalArrayFunction(pComp->flightArr, pComp->flightCount, sizeof(Flight*), printFlight);
 	printf("\n=== Date List ===\n");
 	printDates(pComp);
-	
 }
 
 //==============================
@@ -137,39 +137,12 @@ void	freeFlightArr(Flight** arr, int size)
 
 void	freeCompany(Company* pComp)
 {
-	freeFlightArr(pComp->flightArr, pComp->flightCount);
+	generalArrayFunction(pComp->flightArr, pComp->flightCount, sizeof(Flight**), freeFlight);
 	free(pComp->flightArr);
 	free(pComp->name);
 	L_free(&pComp->dateList.head,NULL);
 }
 
-// ====================================
-
-void	searchFlight(Company* pComp, eSortType searchType) {
-
-	char* searchParameter;
-	printf("enter search parameter:");
-	scanf("%s", &searchParameter);
-
-	switch (searchType)
-	{
-		case eHour:
-			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**),compareByHour);
-			break;
-		case eDate:
-			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**), compareByDate);
-			break;
-		case eOriginCode:
-			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**), compareByOriginCode);
-			break;
-		case eDestCode:
-			//bsearch(, pComp->flightArr, pComp->flightCount, sizeof(Flight**), compareByDestCode);
-			break;
-		case eNull:
-			printf("Flights Not Sorted!");
-			break;
-	}
-}
 // ====================================
 
 void	sortFlightList(Company* pComp) {

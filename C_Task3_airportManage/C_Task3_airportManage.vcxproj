@@ -147,6 +147,7 @@
     <ClInclude Include="..\Flight.h" />
     <ClInclude Include="..\General.h" />
     <ClInclude Include="..\LinkedList.h" />
+    <ClInclude Include="..\searchUtil.h" />
     <ClInclude Include="..\sortUtil.h" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +160,7 @@
     <ClCompile Include="..\General.c" />
     <ClCompile Include="..\LinkedList.c" />
     <ClCompile Include="..\main.c" />
+    <ClCompile Include="..\searchUtil.c" />
     <ClCompile Include="..\sortUtil.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

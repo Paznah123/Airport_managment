@@ -8,27 +8,17 @@
 
 void L_init(LIST* pList)
 {
-   // pList->head = malloc(sizeof(NODE));
     pList->head.next = NULL;
 }
 
 void L_print(const NODE* pHead, void (*print)(void*))
 {
     NODE* head = pHead->next;
-    while (head != NULL) {
+    while (head != NULL) 
+    {
         print(head->key);
         head = head->next;
     }
-}
-
-void L_push(NODE** head, DATA new_data)
-{
-    NODE* new_node = (NODE*)malloc(sizeof(NODE));
-
-    new_node->key = new_data;
-    new_node->next = *head;
-
-    *head = new_node;
 }
 
 void L_insertAfter(NODE* prev_node, DATA new_data)
@@ -90,27 +80,22 @@ BOOL	L_free(NODE* pList, void (*freeFunc)(void*))
     tmp = pList;
     BOOL res = True;
     while (res)
-    {
         res = L_delete(tmp, freeFunc);
-    }
 
     return True;
 }
 
 //================================
 
-NODE* insertAirportToList(const NODE* head, const DATA data) {
+NODE*   chooseAirportPlace(const NODE* head, const DATA data) {
     if (!head->next)
-    {
         return head;
-    }
+
     NODE* current = head;
     while (current->next)
     {
         if (strcmp(((Airport*)current->next->key)->code, ((Airport*)data)->code) > 0)
-        {
             break;
-        }
         current = current->next;
     }
     return current;
@@ -118,7 +103,7 @@ NODE* insertAirportToList(const NODE* head, const DATA data) {
 
 //==============================
 
-NODE* insertDateToList(const NODE* head, const DATA data) {
+NODE*   chooseDatePlace(const NODE* head, const DATA data) {
     if (!head->next)
     {
         return head;
@@ -127,32 +112,30 @@ NODE* insertDateToList(const NODE* head, const DATA data) {
     while (current->next)
     {
         if (compareDate((Date*)current->next->key, ((Date*)data)) > 0)
-        {
             break;
-        }
         current = current->next;
     }
     return current;
 }
 
-int		addLNodeToList(NODE* head, void* data, NODE* (whereToAdd)(const NODE*, const DATA)) {
+//==============================
+
+int		insertNodeToList(NODE* head, void* data, NODE* (findPlace)(const NODE*, const DATA)) {
     if (!head)
     {
-        printf("List hasn't been initiated!\n");
+        printf("List is Empty!\n");
         return 0;
     }
     NODE* newNode = (NODE*)malloc(sizeof(NODE));
     if (!newNode)
-    {
         return 0;
-    }
     newNode->key = data;
-    NODE* wTA = (*whereToAdd)(head, data);
-    if (!wTA) {
+    NODE* correctPlace = (*findPlace)(head, data);
+    if (!correctPlace) {
         free(newNode);
         return 0;
     }
-    newNode->next = wTA->next;
-    wTA->next = newNode;
+    newNode->next = correctPlace->next;
+    correctPlace->next = newNode;
     return 1;
 }

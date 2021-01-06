@@ -80,7 +80,7 @@ void readManagerFromTextFile(AirportManager* pManager)
 		airport->name = _strdup(&temp1);
 		airport->country = _strdup(&temp2);
 
-		addLNodeToList(&pManager->airportList.head, airport, insertAirportToList);
+		insertNodeToList(&pManager->airportList.head, airport, chooseAirportPlace);
 	}
 	fclose(fp);
 }

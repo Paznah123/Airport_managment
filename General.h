@@ -19,4 +19,5 @@ char*	myGets(char* buffer, int size);
 char*	getDynStr(char* str);
 char**	splitCharsToWords(char* str,int* pCount,int* pTotalLength);
 
+//==============================
 

@@ -8,6 +8,7 @@
 #include "FileUtil.h"
 #include "General.h"
 #include "LinkedList.h"
+#include "searchUtil.h"
 
 int menu();
 

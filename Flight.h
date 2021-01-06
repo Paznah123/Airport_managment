@@ -20,7 +20,8 @@ Airport*	setAiportToFlight(const AirportManager* pManager, const char* msg);
 int			isFlightInRoute(const Flight* pFlight, const char* codeSource, const char* codeDest);
 int			countFlightsInRoute(Flight** arr, int size,const char* codeSource, const char* codeDest);
 int			getFlightHour();
-void		printFlight(const Flight* pFlight);
 void		initFlight(Flight* pFlight, const AirportManager* pManager);
-void		freeFlight(Flight* pFlight);
+void		printFlight(const DATA data);
+void		freeFlight(DATA data);
 
+//==============================

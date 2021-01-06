@@ -78,15 +78,17 @@ int		countFlightsInRoute(Flight** arr, int size,const char* codeSource,
 
 //==============================
 
-void	printFlight(const Flight* pFlight)
+void	printFlight(const DATA data)
 {
+	Flight* pFlight = (Flight*)data;
 	printf("Flight - %s -> %s | ", pFlight->originCode, pFlight->destCode);
 	printf("Hour: %d\t", pFlight->hour);
 	printDate(&pFlight->date);
 }
 
-void	freeFlight(Flight* pFlight)
+void	freeFlight(DATA data)
 {
+	Flight* pFlight = (Flight*)data;
 	free(pFlight);
 }
 

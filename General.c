@@ -8,7 +8,8 @@
 void generalArrayFunction(void* arr, int length, int elementSize, void(*func)(void*)) {
 	for (int i = 0; i < length; i++)
 	{
-		func((char*)arr + i * elementSize);
+		(*func)(*(void**)arr);
+		(char*)arr += elementSize;
 	}
 }
 

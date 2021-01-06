@@ -11,7 +11,7 @@ const char* sortTypes[eNull - 1] = { "Sort By Hour", "Sort By Date",
 
 // ====================================
 
-int sortMenu() {
+int		sortMenu() {
 	int option;
 	printf("\n\n");
 	printf("Please choose one of the following options\n");
@@ -31,7 +31,7 @@ int sortMenu() {
 
 // ====================================
 
-int compareByHour(const DATA a, const DATA b) {
+int		compareByHour(const DATA a, const DATA b) {
 	Flight* flightA = *(Flight**)a;
 	Flight* flightB = *(Flight**)b;
 
@@ -45,7 +45,7 @@ int compareByHour(const DATA a, const DATA b) {
 
 // ====================================
 
-int compareByDate(const DATA a, const DATA b) {
+int		compareByDate(const DATA a, const DATA b) {
 	Flight** flightA = (Flight**)a;
 	Flight** flightB = (Flight**)b;
 
@@ -60,14 +60,14 @@ int compareByDate(const DATA a, const DATA b) {
 
 // ====================================
 
-int compareByOriginCode(const DATA a, const DATA b) {
+int		compareByOriginCode(const DATA a, const DATA b) {
 	Flight** flightA = (Flight**)a;
 	Flight** flightB = (Flight**)b;
 
 	return strcmp(&flightA[0]->originCode, &flightB[0]->originCode);
 }
 
-int compareByDestCode(const DATA a, const DATA b) {
+int		compareByDestCode(const DATA a, const DATA b) {
 	Flight** flightA = (Flight**)a;
 	Flight** flightB = (Flight**)b;
 
@@ -86,7 +86,7 @@ int		compareAirportsByIATA(const DATA p1, const DATA p2)
 
 // ====================================
 
-int compareDate(const DATA a, const DATA b) {
+int		compareDate(const DATA a, const DATA b) {
 	Date* dateA = (Date*)a;
 	Date* dateB = (Date*)b;
 

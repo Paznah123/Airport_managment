@@ -46,7 +46,7 @@ int		addAirport(AirportManager* pManager)
 
 	setAirport(temp, pManager);
 	
-	addLNodeToList(&pManager->airportList.head, temp, insertAirportToList);
+	insertNodeToList(&pManager->airportList.head, temp, chooseAirportPlace);
 
 	pManager->count++;
 	return 1;
