@@ -1,5 +1,4 @@
-# C_Task3_airportManage
-
+# C_airport_managment
 Airports Managment Program (Written in C)
 
 1.write/read files ( .txt , .bin)
